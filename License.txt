@@ -1,0 +1,37 @@
+  
+  ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+  License for use and distribution
+  ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+  Currency Converter Copyright (c) 2015 O.K., alikkond@gmail.com
+
+  Licenses for files are GNU LGPL v3.
+  Currency Converter uses external services. 
+  All usage is subject to your acceptance of the Terms and Conditions of Service, 
+  available at: https://openexchangerates.org/terms/
+  
+  
+  
+  Note: 
+    You can use Currency Converter on any computer, including a computer in a commercial 
+    organization. You don't need to register or pay for Currency Converter.
+
+
+  GNU LGPL information
+  --------------------
+
+    This library is free software; you can redistribute it and/or
+    modify it under the terms of the GNU Lesser General Public
+    License as published by the Free Software Foundation; either
+    version 2.1 of the License, or (at your option) any later version.
+
+    This library is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+    Lesser General Public License for more details.
+
+    You can receive a copy of the GNU Lesser General Public License from 
+    http://www.gnu.org/
+
+  --------------------
+
