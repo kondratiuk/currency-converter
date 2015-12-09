@@ -1,4 +1,6 @@
 # currency-converter
+09-12-2015 
+
 Currency Converter is an Open Source web application for getting currency rates on-line and convert them in each other. 
 Precision and amount of selected currency can be adjusted quite flexible. 
 
