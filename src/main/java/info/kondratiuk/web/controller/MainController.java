@@ -42,66 +42,7 @@ public class MainController {
 	private int historyLimit = 10;
 	private Queue<String> historyQueue = new LinkedList<String>();
 
-	@RequestMapping(value = { "/", "/welcome**" }, method = RequestMethod.GET)
-	public ModelAndView welcomePage() {
-		init();		
-		ModelAndView model = new ModelAndView();
-		model.addObject("title", appName);
-		model.setViewName("hello");
-		return model;
-	}
-
-	@RequestMapping(value = "/main**", method = RequestMethod.GET)
-	public ModelAndView mainPage(@ModelAttribute("actualCurrency") Currency currForm) {
-		String inputForHandling = currForm.getCurrency();
-		String result = "";
-		if (inputForHandling != null) {
-			String[] currArr = inputForHandling.split(",");
-			String rate = calculateCurrentRate(currArr);			
-			result = errors.length() > 0 ? errors.toString() : rate;
-			if (historyQueue.size() >= historyLimit) {
-				historyQueue.remove();
-			}
-			historyLine.append("(").append(requestNumber++).append(") ").append(result).append("\n");
-			historyQueue.add(historyLine.toString());			
-			historyLine.setLength(0);
-			historyResult.setLength(0);
-			for (String sb : historyQueue) {
-				historyResult.append(sb);
-			}
-		}
-		ModelAndView model = new ModelAndView();
-		model.addObject("title", appName);
-		model.addObject("disclaimer", disclaimer.toString());
-		model.addObject("actualCurrency", new Currency());
-		model.addObject("allCurrency", availableCurrencyTypes);
-		model.addObject("result", result);
-		model.addObject("history", historyResult.toString());
-		model.setViewName("main");
-
-		return model;
-	}
-
-	@RequestMapping(value = "/login", method = RequestMethod.GET)
-	public ModelAndView login(@RequestParam(value = "error", required = false) String error,
-			@RequestParam(value = "logout", required = false) String logout) {
-
-		ModelAndView model = new ModelAndView();
-		if (error != null) {
-			model.addObject("error", "Invalid username and/or password!");
-		}
-
-		if (logout != null) {
-			clearSources();			
-			model.addObject("msg", "You've been logged out successfully.");
-		}
-		model.addObject("title", appName);
-		model.setViewName("login");
-
-		return model;
-	}
-	
-	private void init() {
+	{
 		disclaimer = new StringBuilder();
 		errors = new StringBuilder();
 		historyLine = new StringBuilder();
@@ -131,7 +72,65 @@ public class MainController {
 			e.printStackTrace();
 		}
 	}
-	
+
+	@RequestMapping(value = { "/", "/welcome**" }, method = RequestMethod.GET)
+	public ModelAndView welcomePage() {
+		ModelAndView model = new ModelAndView();
+		model.addObject("title", appName);
+		model.setViewName("hello");
+		return model;
+	}
+
+	@RequestMapping(value = "/main**", method = RequestMethod.GET)
+	public ModelAndView mainPage(@ModelAttribute("actualCurrency") Currency currForm) {
+		String inputForHandling = currForm.getCurrency();
+		String result = "";
+		if (inputForHandling != null) {
+			String[] currArr = inputForHandling.split(",");
+			String rate = calculateCurrentRate(currArr);
+			result = errors.length() > 0 ? errors.toString() : rate;
+			if (historyQueue.size() >= historyLimit) {
+				historyQueue.remove();
+			}
+			historyLine.append("(").append(requestNumber++).append(") ").append(result).append("\n");
+			historyQueue.add(historyLine.toString());
+			historyLine.setLength(0);
+			historyResult.setLength(0);
+			for (String sb : historyQueue) {
+				historyResult.append(sb);
+			}
+		}
+		ModelAndView model = new ModelAndView();
+		model.addObject("title", appName);
+		model.addObject("disclaimer", disclaimer.toString());
+		model.addObject("actualCurrency", new Currency());
+		model.addObject("allCurrency", availableCurrencyTypes);
+		model.addObject("result", result);
+		model.addObject("history", historyResult.toString());
+		model.setViewName("main");
+
+		return model;
+	}
+
+	@RequestMapping(value = "/login", method = RequestMethod.GET)
+	public ModelAndView login(@RequestParam(value = "error", required = false) String error,
+			@RequestParam(value = "logout", required = false) String logout) {
+
+		ModelAndView model = new ModelAndView();
+		if (error != null) {
+			model.addObject("error", "Invalid username and/or password!");
+		}
+
+		if (logout != null) {
+			clearSources();
+			model.addObject("msg", "You've been logged out successfully.");
+		}
+		model.addObject("title", appName);
+		model.setViewName("login");
+
+		return model;
+	}
+
 	private String calculateCurrentRate(String[] currArr) {
 		Map<String, Double> rates = new HashMap<String, Double>(availableCurrencyTypes.size());
 		JSONObject jsonObject = null;
@@ -167,19 +166,27 @@ public class MainController {
 		String fromCurr = rates.get(currArr[2]) + "";
 		String toCurr = rates.get(currArr[3]) + "";
 		int scale = Integer.parseInt(currArr[0]);
+		if (scale < 1) {
+			return "Error: Incorrect precision value: " + scale + " Valid numbers are between 1 and 99.";
+		}
 		int roundingMode = BigDecimal.ROUND_HALF_UP;
 
 		try {
 			BigDecimal fromCurrency = new BigDecimal(fromCurr).setScale(scale, roundingMode);
 			BigDecimal toCurrency = new BigDecimal(toCurr).setScale(scale, roundingMode);
+			
 			BigDecimal amountCurrency = new BigDecimal(currArr[1]);
+			double amountVal = amountCurrency.doubleValue();
+			if (amountVal <= 0) {
+				return "Error: Incorrect amount value: " + amountVal + " Valid input number must be bigger than 0.";
+			}
 
 			BigDecimal res = toCurrency.divide(fromCurrency, scale, roundingMode);
 			res = res.multiply(amountCurrency);
-			result = amountCurrency + " " + currArr[2] + " = " + res + " " + currArr[3] + "      Rate valid time: "
-					+ timestamp + "      Request time: " + new Date();
+			result = amountCurrency + " " + currArr[2] + " = " + res + " " + currArr[3] + " >>> Rate valid time: "
+					+ timestamp + " | Request time: " + new Date();
 		} catch (NumberFormatException nfe) {
-			result = "Error: Incorrect input data. Please, select currency.";
+			result = "Error: Incorrect input data format or currency is not selected.";
 		}
 
 		return result;

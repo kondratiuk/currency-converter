@@ -9,4 +9,4 @@ To deploy the application the Tomcat is recommended.
 To login in the application use login/psw: guest/guest
 
 Used technology stack:
-Java EE 7, Spring MVC 3.2.8, Spring Security 3.2.3, JSF/JSTL 2.0, HTML, JSON, Jetty 5.1.12, Maven 3.3.9, Git 2.6.3, Eclipse 4.5.1, etc.
+Java EE 7, Spring MVC 3.2.8, Spring Security 3.2.3, JSF/JSTL 2.0, HTML, JSON, Jetty 5.1.12, Maven 3.3.9, Git 2.6.3, Tomcat 7, Eclipse 4.5.1, etc.

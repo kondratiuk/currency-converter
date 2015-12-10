@@ -10,10 +10,6 @@
 <meta name="Description" content="Login page.">
 
 <style>
-h6 {
-	background-color: #e0dede;
-}
-
 .error {
 	padding: 15px;
 	margin-bottom: 20px;
@@ -84,7 +80,7 @@ h6 {
 	</div>
 
 	<p></p>
-	<h6>Copyright (c) 2015 O.K., alikkond@gmail.com</h6>
+	<h6>(c) 2015 O.K., alikkond@gmail.com</h6>
 	<p></p>
 
 </body>

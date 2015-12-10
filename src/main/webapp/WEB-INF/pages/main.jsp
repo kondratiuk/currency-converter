@@ -11,10 +11,6 @@
 <meta name="Description" content="Get real-time stock quotes.">
 
 <style>
-h6 {
-	background-color: #e0dede;
-}
-
 .error {
 	color: #ff0000;
 }
@@ -29,22 +25,21 @@ h6 {
 
 .disclaimer {
 	font-family: 'Tahoma', sans-serif;
-	font-size: 12px;
+	font-size: 10px;
 	color: b80808;
 	border: 1px solid b80808;
-	width: 1050px;
+	width: 750px;
 	height: 55px;
-	padding-top: 5px;
-	padding-left: 10px;
+	padding: 5px;
 }
 
 .history {
 	font-family: 'Tahoma', sans-serif;
-	font-size: 15px;
+	font-size: 12px;
 	color: #6da021;
 	border: 1px solid #6da021;
-	width: 1050px;
-	height: 250px;
+	width: 750px;
+	height: 200px;
 	padding-top: 5px;
 	padding-left: 10px;
 }
@@ -58,10 +53,10 @@ h6 {
 				<tr>
 					<td><c:if
 							test="${pageContext.request.userPrincipal.name != null}">
-							<h3>
-								Welcome : ${pageContext.request.userPrincipal.name} | <a
+							<h4>
+								${pageContext.request.userPrincipal.name} | <a
 									href="javascript:formSubmit()"> Logout</a>
-							</h3>
+							</h4>
 						</c:if>
 					</td>
 				</tr>
@@ -71,7 +66,6 @@ h6 {
 
 	<textarea rows="4" cols="150" class="disclaimer">${disclaimer}</textarea>
 	<p></p>
-	<p></p>
 
 	<h3>${title}</h3>
 	<p></p>
@@ -79,18 +73,16 @@ h6 {
 	<form:form action="main" modelAttribute="actualCurrency" method="get">
 		<div class="sfe-break-top">
 			<h5>
-				Please, select calculation precision. It's numbers quantity after
-				dot. It should be integer in recommended range 1...20):  
-				<form:input path="currency" name="precision" maxlength="2" size="1"
+				Enter calculation precision (numbers from range 1...99):  
+				<form:input path="currency" name="precision" maxlength="2" size="10"
 					autocomplete="off" value="5" />
 			</h5>
 		</div>
 		<p></p>
-		<p></p>
 
 		<div class="sfe-break-top">
-			<h5>
-				Please, use dot to input decimal number:
+			<h5> 
+				Enter amount. Use dot as selector for decimal numbers: 
 				<form:input path="currency" name="num" maxlength="20" size="10"
 					autocomplete="off" value="1" />
 			</h5>
@@ -124,7 +116,7 @@ h6 {
 	<p></p>
 
 	<p></p>
-	<h6>Copyright (c) 2015 O.K., alikkond@gmail.com</h6>
+	<h6>(c) 2015 O.K., alikkond@gmail.com</h6>
 	<p></p>
 
 	<c:url value="/j_spring_security_logout" var="logoutUrl" />
