@@ -1,0 +1,2 @@
+INSERT INTO users (name, email, country, zipcode, city, street, day, month, year) VALUES ('alex', 'alex@mail.com', 'Germany', '80000', 'Munich', 'Str', '12', 'January', '1900');
+INSERT INTO users (name, email, country, zipcode, city, street, day, month, year) VALUES ('bob', 'bob@mail.com', 'Italy', '20000', 'Rome', 'Str', '11', 'July', '1910');

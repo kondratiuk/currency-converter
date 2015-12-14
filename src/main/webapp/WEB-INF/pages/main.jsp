@@ -7,7 +7,7 @@
 
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-<title>Currency Converter Application</title>
+<title>On-Line High Precision Currency Converter</title>
 <meta name="Description" content="Get real-time stock quotes.">
 
 <style>
@@ -38,15 +38,17 @@
 	font-size: 12px;
 	color: #6da021;
 	border: 1px solid #6da021;
-	width: 750px;
+	width: 800px;
 	height: 200px;
 	padding-top: 5px;
 	padding-left: 10px;
 }
 </style>
 </head>
+<jsp:include page="fragments/headerMain.jsp" />
 
 <body style="margin-left: 6px; min-width: 0px;">
+
 	<div id="logout-box">
 		<table>
 			<tbody>
@@ -57,23 +59,20 @@
 								${pageContext.request.userPrincipal.name} | <a
 									href="javascript:formSubmit()"> Logout</a>
 							</h4>
-						</c:if>
-					</td>
+						</c:if></td>
 				</tr>
 			</tbody>
 		</table>
 	</div>
-
-	<textarea rows="4" cols="150" class="disclaimer">${disclaimer}</textarea>
-	<p></p>
-
-	<h3>${title}</h3>
-	<p></p>
+	
+	<div class="header">
+		<label class="disclaimer">${disclaimer}</label>
+	</div>
 
 	<form:form action="main" modelAttribute="actualCurrency" method="get">
 		<div class="sfe-break-top">
 			<h5>
-				Enter calculation precision (numbers from range 1...99):  
+				Enter calculation precision (numbers from range 1...99):
 				<form:input path="currency" name="precision" maxlength="2" size="10"
 					autocomplete="off" value="5" />
 			</h5>
@@ -81,8 +80,8 @@
 		<p></p>
 
 		<div class="sfe-break-top">
-			<h5> 
-				Enter amount. Use dot as selector for decimal numbers: 
+			<h5>
+				Enter amount. Use dot as selector for decimal numbers:
 				<form:input path="currency" name="num" maxlength="20" size="10"
 					autocomplete="off" value="1" />
 			</h5>
@@ -107,17 +106,15 @@
 		<input type="submit" value="Convert" />
 		<p></p>
 	</form:form>
-
+	<p></p>
 	<h5>${result}</h5>
+	<p></p>
 	<p></p>
 
 	<h5>Last 10 requests:</h5>
 	<textarea rows="20" cols="150" class="history">${history}</textarea>
 	<p></p>
 
-	<p></p>
-	<h6>(c) 2015 O.K., alikkond@gmail.com</h6>
-	<p></p>
 
 	<c:url value="/j_spring_security_logout" var="logoutUrl" />
 	<form action="${logoutUrl}" method="post" id="logoutForm">
@@ -130,5 +127,6 @@
 		}
 	</script>
 
+	<jsp:include page="fragments/footer.jsp" />
 </body>
 </html>

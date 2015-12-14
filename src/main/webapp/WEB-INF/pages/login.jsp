@@ -4,10 +4,9 @@
 <html lang="en">
 
 <head>
-<title>Login Page</title>
+<title>On-Line High Precision Currency Converter</title>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-<title>On-Line Currency Converter with high precision</title>
-<meta name="Description" content="Login page.">
+<meta name="Description" content="Login page">
 
 <style>
 .error {
@@ -42,11 +41,14 @@
 </style>
 </head>
 
+<jsp:include page="fragments/headerMain.jsp" />
+
 <body onload='document.loginForm.username.focus();'>
-	<h3>${title}</h3>
+	
+	<a class="navbar-brand" href="${userActionUrl}/welcome">Home</a>
 
 	<div id="login-box">
-		<h5>Login with Username and Password</h5>
+		<h4>Login with Username and Password</h4>
 
 		<c:if test="${not empty error}">
 			<div class="error">${error}</div>
@@ -79,9 +81,7 @@
 		</form>
 	</div>
 
-	<p></p>
-	<h6>(c) 2015 O.K., alikkond@gmail.com</h6>
-	<p></p>
+	<jsp:include page="fragments/footer.jsp" />
 
 </body>
 </html>

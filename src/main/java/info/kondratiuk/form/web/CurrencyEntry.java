@@ -2,15 +2,14 @@
  * Copyright (c) 2015 O.K. GNU LGPL v3.
  *
  */
-package info.kondratiuk.web.controller;
+package info.kondratiuk.form.web;
 
 /**
- * Container for currency
+ * Container for currency entity
  * 
  * @author o.k.
  */
-public class Currency {
-
+public class CurrencyEntry {
 	private String currency;
 
 	public String getCurrency() {
@@ -37,7 +36,7 @@ public class Currency {
 			return false;
 		if (getClass() != obj.getClass())
 			return false;
-		Currency other = (Currency) obj;
+		CurrencyEntry other = (CurrencyEntry) obj;
 		if (currency == null) {
 			if (other.currency != null)
 				return false;

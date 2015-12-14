@@ -1,23 +1,31 @@
-<%@page session="false"%>
-
 <html lang="en">
 
 <head>
+<title>On-Line High Precision Currency Converter</title>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-<title>On-Line Currency Converter with high precision</title>
-<meta name="Description" content="Welcome page.">
+<meta name="Description" content="Welcome page">
 </head>
 
+<jsp:include page="fragments/headerMain.jsp" />
 <body>
-	<h3>${title}</h3>
 
-	<h5>
-		<a href=${userActionUrl}/main> Login</a>
-	</h5>
+	<div class="navbar-header">
+		<div class="col-sm-10">
+			<a class="navbar-brand" href="${userActionUrl}/main"> Login</a>
+		</div>
 
-	<p></p>
-	<h6>(c) 2015 O.K., alikkond@gmail.com</h6>
-	<p></p>
+		<div class="col-sm-10">
+			<a class="navbar-brand" href="${userActionUrl}/users/add"> Register</a>
+		</div>
+
+		<div class="col-sm-10">
+			<a class="navbar-brand" href="${userActionUrl}/users"> User Management</a>
+		</div>
+
+		<div class="col-sm-10">
+			<jsp:include page="fragments/footer.jsp" />
+		</div>
+	</div>
 
 </body>
 </html>

@@ -2,7 +2,7 @@
  * Copyright (c) 2015 O.K. GNU LGPL v3.
  *
  */
-package info.kondratiuk.web.controller;
+package info.kondratiuk.form.web;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -23,7 +23,6 @@ import org.json.JSONObject;
  * @author o.k.
  */
 public class JsonReader {
-
 	private static String readAll(Reader rd) throws IOException {
 		StringBuilder sb = new StringBuilder();
 		int cp;
@@ -41,7 +40,7 @@ public class JsonReader {
 	
 	public static JSONArray readJsonArrFromUrl(String url) throws IOException, JSONException {
 		String jsonText = getJson(url);		
-		JSONArray json = new JSONArray("[" + jsonText + "]");		
+		JSONArray json = new JSONArray("[" + jsonText + "]");
 		return json;
 	}
 

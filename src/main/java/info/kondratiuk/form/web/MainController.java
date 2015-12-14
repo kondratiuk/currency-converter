@@ -4,7 +4,7 @@
  * All usage is subject to your acceptance of the Terms and Conditions of Service, available at: https://openexchangerates.org/terms/
  *
  */
-package info.kondratiuk.web.controller;
+package info.kondratiuk.form.web;
 
 import java.io.IOException;
 import java.math.BigDecimal;
@@ -18,6 +18,8 @@ import java.util.TreeMap;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -32,7 +34,8 @@ import org.springframework.web.servlet.ModelAndView;
  */
 @Controller
 public class MainController {
-	private static String appName = "On-Line High Precision Currency Converter";
+	private final Logger logger = LoggerFactory.getLogger(getClass());
+	
 	private Map<String, String> availableCurrencyTypes;
 	private StringBuilder disclaimer;
 	private StringBuilder errors;
@@ -57,6 +60,7 @@ public class MainController {
 				String key = (String) name;
 				String val = (String) jsonObj.get(key);
 				availableCurrencyTypes.put(key, val + " (" + key + ")");
+				logger.info("Available Currency Types are loaded");
 			}
 		} catch (JSONException | IOException e) {
 			errors.append("Error: currency types are not available now! Try later, please.");
@@ -67,6 +71,7 @@ public class MainController {
 					"https://openexchangerates.org/api/latest.json?app_id=515e27431560489abbbc00c4007bcf4b");
 			String discl = jsonObject.getString("disclaimer");
 			disclaimer.append(discl);
+			logger.info("Disclaimer is loaded");
 		} catch (JSONException | IOException e) {
 			disclaimer.append("Error: disclaimer is not available now! Try later, please.");
 			e.printStackTrace();
@@ -76,13 +81,12 @@ public class MainController {
 	@RequestMapping(value = { "/", "/welcome**" }, method = RequestMethod.GET)
 	public ModelAndView welcomePage() {
 		ModelAndView model = new ModelAndView();
-		model.addObject("title", appName);
 		model.setViewName("hello");
 		return model;
 	}
 
 	@RequestMapping(value = "/main**", method = RequestMethod.GET)
-	public ModelAndView mainPage(@ModelAttribute("actualCurrency") Currency currForm) {
+	public ModelAndView mainPage(@ModelAttribute("actualCurrency") CurrencyEntry currForm) {
 		String inputForHandling = currForm.getCurrency();
 		String result = "";
 		if (inputForHandling != null) {
@@ -101,9 +105,8 @@ public class MainController {
 			}
 		}
 		ModelAndView model = new ModelAndView();
-		model.addObject("title", appName);
 		model.addObject("disclaimer", disclaimer.toString());
-		model.addObject("actualCurrency", new Currency());
+		model.addObject("actualCurrency", new CurrencyEntry());
 		model.addObject("allCurrency", availableCurrencyTypes);
 		model.addObject("result", result);
 		model.addObject("history", historyResult.toString());
@@ -125,7 +128,6 @@ public class MainController {
 			clearSources();
 			model.addObject("msg", "You've been logged out successfully.");
 		}
-		model.addObject("title", appName);
 		model.setViewName("login");
 
 		return model;
@@ -199,5 +201,6 @@ public class MainController {
 
 		requestNumber = 1;
 		historyQueue.clear();
+		logger.debug("Sources were cleared");
 	}
 }
