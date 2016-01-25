@@ -3,13 +3,12 @@
   License for use and distribution
   ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-  Currency Converter Copyright (c) 2015 O.K., alikkond@gmail.com
+  Currency Converter Copyright (c) 2015 O.K.
 
   Licenses for files are GNU LGPL v3.
-  Currency Converter uses external services. 
-  All usage is subject to your acceptance of the Terms and Conditions of Service, 
+  Currency Converter uses external services. All usage is subject to your acceptance of the Terms and Conditions of Service, 
   available at: https://openexchangerates.org/terms/
-  
+  Currency Converter uses some solutions which are based on information from mkyong.com. 
   
   
   Note: 

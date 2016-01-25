@@ -22,6 +22,7 @@ public class User {
 	private String day;
 	private String month;
 	private String year;
+	private String appid;
 
 	public boolean isNew() {
 		return (this.id == null);
@@ -123,10 +124,19 @@ public class User {
 		this.year = year;
 	}
 
+	public String getAppid() {
+		return appid;
+	}
+
+	public void setAppid(String appid) {
+		this.appid = appid;
+	}
+
 	@Override
 	public int hashCode() {
 		final int prime = 31;
 		int result = 1;
+		result = prime * result + ((appid == null) ? 0 : appid.hashCode());
 		result = prime * result + ((city == null) ? 0 : city.hashCode());
 		result = prime * result + ((confirmPassword == null) ? 0 : confirmPassword.hashCode());
 		result = prime * result + ((country == null) ? 0 : country.hashCode());
@@ -151,6 +161,11 @@ public class User {
 		if (getClass() != obj.getClass())
 			return false;
 		User other = (User) obj;
+		if (appid == null) {
+			if (other.appid != null)
+				return false;
+		} else if (!appid.equals(other.appid))
+			return false;
 		if (city == null) {
 			if (other.city != null)
 				return false;
@@ -216,9 +231,11 @@ public class User {
 
 	@Override
 	public String toString() {
-		return "UserEntry [id=" + id + ", name=" + name + ", email=" + email + ", street=" + street + ", password="
+		return "User [id=" + id + ", name=" + name + ", email=" + email + ", street=" + street + ", password="
 				+ password + ", confirmPassword=" + confirmPassword + ", country=" + country + ", zipcode=" + zipcode
-				+ ", city=" + city + ", day=" + day + ", month=" + month + ", year=" + year + "]";
+				+ ", city=" + city + ", day=" + day + ", month=" + month + ", year=" + year + ", appid=" + appid + "]";
 	}
 
+	
+	
 }

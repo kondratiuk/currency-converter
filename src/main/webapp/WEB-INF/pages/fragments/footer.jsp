@@ -2,7 +2,7 @@
 <div class="container">
 	<hr>
 	<footer>
-		<p>&copy; 2015 O.K. [alikkond@gmail.com]</p>
+		<p>&copy; 2015 O.K.</p>
 	</footer>
 </div>
 

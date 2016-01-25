@@ -4,9 +4,11 @@
  */
 package info.kondratiuk.form.validator;
 
+import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
+import org.json.JSONException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Component;
@@ -15,6 +17,7 @@ import org.springframework.validation.ValidationUtils;
 import org.springframework.validation.Validator;
 
 import info.kondratiuk.form.model.User;
+import info.kondratiuk.form.web.JsonReader;
 
 /**
  * Validator for the User form.
@@ -48,6 +51,7 @@ public class UserFormValidator implements Validator {
 		ValidationUtils.rejectIfEmptyOrWhitespace(errors, "zipcode", "NotEmpty.userForm.zipcode");
 		ValidationUtils.rejectIfEmptyOrWhitespace(errors, "city", "NotEmpty.userForm.city");
 		ValidationUtils.rejectIfEmptyOrWhitespace(errors, "street", "NotEmpty.userForm.street");
+		ValidationUtils.rejectIfEmptyOrWhitespace(errors, "appid", "NotEmpty.userForm.appid");
 
 		// name
 		if (user.getName().length() > 50) {
@@ -110,11 +114,11 @@ public class UserFormValidator implements Validator {
 			} catch (NumberFormatException nfe) {
 				errors.rejectValue("day", "Userform.day.format");
 			}
-		}		
+		}
 		if (!user.getMonth().isEmpty() || !user.getYear().isEmpty()) {
 			if (user.getDay().isEmpty()) {
 				errors.rejectValue("day", "Userform.day.empty");
-			} 
+			}
 		}
 
 		// month
@@ -145,6 +149,14 @@ public class UserFormValidator implements Validator {
 				errors.rejectValue("year", "Userform.year.empty");
 			}
 		}
+
+		// appid
+		try {
+			JsonReader.readJsonFromUrl("https://openexchangerates.org/api/latest.json?app_id=" + user.getAppid());
+		} catch (JSONException | IOException e) {
+			errors.rejectValue("appid", "Userform.appid.invalid");
+		}
+
 	}
 
 }

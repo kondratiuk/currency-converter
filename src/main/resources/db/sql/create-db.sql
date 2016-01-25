@@ -11,5 +11,6 @@ CREATE TABLE users (
   street VARCHAR(200),
   day VARCHAR(2), 
   month VARCHAR(20), 
-  year VARCHAR(4)  
+  year VARCHAR(4),  
+  appid VARCHAR(200) 
 );

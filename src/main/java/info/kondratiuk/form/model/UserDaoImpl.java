@@ -57,7 +57,7 @@ public class UserDaoImpl implements IUser {
 			result = namedParamJdbcTmpl.queryForObject(sql, params, new UserMapper());
 			logger.info("User is found by Id: " + id);
 		} catch (EmptyResultDataAccessException e) {
-			// do nothing
+			logger.warn("User is not found by Id: " + id);
 		}
 		return result;
 	}
@@ -75,8 +75,8 @@ public class UserDaoImpl implements IUser {
 	public void saveUser(User user) {
 		KeyHolder keyHolder = new GeneratedKeyHolder();
 		
-		String sql = "INSERT INTO USERS(NAME, EMAIL, PASSWORD, COUNTRY, ZIPCODE, CITY, STREET, DAY, MONTH, YEAR) "
-				+ "VALUES ( :name, :email, :password, :country, :zipcode, :city, :street, :day, :month, :year)";
+		String sql = "INSERT INTO USERS(NAME, EMAIL, PASSWORD, COUNTRY, ZIPCODE, CITY, STREET, DAY, MONTH, YEAR, APPID) "
+				+ "VALUES ( :name, :email, :password, :country, :zipcode, :city, :street, :day, :month, :year, :appid)";
 
 		namedParamJdbcTmpl.update(sql, getSqlParameterByModel(user), keyHolder);
 		user.setId(keyHolder.getKey().intValue());	
@@ -86,7 +86,7 @@ public class UserDaoImpl implements IUser {
 	@Override
 	public void updateUser(User user) {
 		String sql = "UPDATE USERS SET NAME=:name, EMAIL=:email, PASSWORD=:password, COUNTRY=:country, "
-				+ "ZIPCODE=:zipcode, CITY=:city, STREET=:street, DAY=:day, MONTH=:month, YEAR=:year";
+				+ "ZIPCODE=:zipcode, CITY=:city, STREET=:street, DAY=:day, MONTH=:month, YEAR=:year, APPID=:appid";
 
 		namedParamJdbcTmpl.update(sql, getSqlParameterByModel(user));
 		logger.info("User is updated in Database: " + user);
@@ -113,6 +113,7 @@ public class UserDaoImpl implements IUser {
 		paramSource.addValue("day", user.getDay());
 		paramSource.addValue("month", user.getMonth());
 		paramSource.addValue("year", user.getYear());
+		paramSource.addValue("appid", user.getAppid());
 
 		return paramSource;
 	}
@@ -132,6 +133,7 @@ public class UserDaoImpl implements IUser {
 			user.setDay(rs.getString("day"));
 			user.setMonth(rs.getString("month"));
 			user.setYear(rs.getString("year"));
+			user.setAppid(rs.getString("appid"));
 
 			return user;
 		}

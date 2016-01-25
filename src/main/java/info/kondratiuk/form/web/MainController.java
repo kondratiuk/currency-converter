@@ -11,6 +11,7 @@ import java.math.BigDecimal;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.LinkedList;
+import java.util.List;
 import java.util.Map;
 import java.util.Queue;
 import java.util.TreeMap;
@@ -27,6 +28,9 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
+import info.kondratiuk.form.model.User;
+import info.kondratiuk.form.model.UserDaoImpl;
+
 /**
  * Controller for the application
  * 
@@ -35,7 +39,8 @@ import org.springframework.web.servlet.ModelAndView;
 @Controller
 public class MainController {
 	private final Logger logger = LoggerFactory.getLogger(getClass());
-	
+	private static String currentAppId = "";
+
 	private Map<String, String> availableCurrencyTypes;
 	private StringBuilder disclaimer;
 	private StringBuilder errors;
@@ -46,7 +51,6 @@ public class MainController {
 	private Queue<String> historyQueue = new LinkedList<String>();
 
 	{
-		disclaimer = new StringBuilder();
 		errors = new StringBuilder();
 		historyLine = new StringBuilder();
 		historyResult = new StringBuilder();
@@ -66,16 +70,6 @@ public class MainController {
 			errors.append("Error: currency types are not available now! Try later, please.");
 			e.printStackTrace();
 		}
-		try {
-			JSONObject jsonObject = JsonReader.readJsonFromUrl(
-					"https://openexchangerates.org/api/latest.json?app_id=515e27431560489abbbc00c4007bcf4b");
-			String discl = jsonObject.getString("disclaimer");
-			disclaimer.append(discl);
-			logger.info("Disclaimer is loaded");
-		} catch (JSONException | IOException e) {
-			disclaimer.append("Error: disclaimer is not available now! Try later, please.");
-			e.printStackTrace();
-		}
 	}
 
 	@RequestMapping(value = { "/", "/welcome**" }, method = RequestMethod.GET)
@@ -87,6 +81,11 @@ public class MainController {
 
 	@RequestMapping(value = "/main**", method = RequestMethod.GET)
 	public ModelAndView mainPage(@ModelAttribute("actualCurrency") CurrencyEntry currForm) {
+		detectCurrentAppId();
+		if (disclaimer == null) {
+			disclaimer = getDisclaimer();
+		}
+		
 		String inputForHandling = currForm.getCurrency();
 		String result = "";
 		if (inputForHandling != null) {
@@ -103,7 +102,8 @@ public class MainController {
 			for (String sb : historyQueue) {
 				historyResult.append(sb);
 			}
-		}
+		}		
+		
 		ModelAndView model = new ModelAndView();
 		model.addObject("disclaimer", disclaimer.toString());
 		model.addObject("actualCurrency", new CurrencyEntry());
@@ -128,9 +128,35 @@ public class MainController {
 			clearSources();
 			model.addObject("msg", "You've been logged out successfully.");
 		}
-		model.setViewName("login");
+		model.setViewName("login");		
 
 		return model;
+	}
+
+	private void detectCurrentAppId() {
+		String currentUserEmail = UserAccessController.currentUser;
+		List<User> users = UserDaoImpl.getAllUsers();
+		for (User user : users) {
+			if (user.getEmail().equalsIgnoreCase(currentUserEmail)) {
+				currentAppId = user.getAppid();
+				continue;
+			}
+		}
+	}
+
+	private StringBuilder getDisclaimer() {
+		disclaimer = new StringBuilder();
+		try {
+			JSONObject jsonObject = JsonReader
+					.readJsonFromUrl("https://openexchangerates.org/api/latest.json?app_id=" + currentAppId);
+			String discl = jsonObject.getString("disclaimer");
+			disclaimer.append(discl);
+			logger.info("Disclaimer is loaded");
+		} catch (JSONException | IOException e) {
+			logger.warn("Disclaimer is not available!");
+			disclaimer.append("Disclaimer is not available!");
+		}
+		return disclaimer;
 	}
 
 	private String calculateCurrentRate(String[] currArr) {
@@ -139,8 +165,8 @@ public class MainController {
 		String result = "";
 
 		try {
-			jsonObject = JsonReader.readJsonFromUrl(
-					"https://openexchangerates.org/api/latest.json?app_id=515e27431560489abbbc00c4007bcf4b");
+			jsonObject = JsonReader
+					.readJsonFromUrl("https://openexchangerates.org/api/latest.json?app_id=" + currentAppId);
 		} catch (JSONException | IOException e) {
 			errors.append("Error: currency rates are not available now! Try later, please.");
 			e.printStackTrace();
@@ -176,7 +202,7 @@ public class MainController {
 		try {
 			BigDecimal fromCurrency = new BigDecimal(fromCurr).setScale(scale, roundingMode);
 			BigDecimal toCurrency = new BigDecimal(toCurr).setScale(scale, roundingMode);
-			
+
 			BigDecimal amountCurrency = new BigDecimal(currArr[1]);
 			double amountVal = amountCurrency.doubleValue();
 			if (amountVal <= 0) {

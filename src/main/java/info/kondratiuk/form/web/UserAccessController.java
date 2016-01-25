@@ -25,6 +25,7 @@ import info.kondratiuk.form.model.UserDaoImpl;
  */
 public class UserAccessController implements UserDetailsService {
 	private final Logger logger = LoggerFactory.getLogger(getClass());
+	public static String currentUser;
 	
 	@Override
 	public UserDetails loadUserByUsername(final String email) throws UsernameNotFoundException {
@@ -46,6 +47,8 @@ public class UserAccessController implements UserDetailsService {
 		final User user = new User();
 		user.setEmail(emailTmp);
 		user.setPassword(passwordTmp);
+		
+		currentUser = user.getEmail();
 
 		if (!isUserFound) {
 			throw new UsernameNotFoundException(email + " not found!");
