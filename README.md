@@ -11,6 +11,6 @@ Used technology stack:
 Java EE, Spring MVC/Spring Security, JSF/JSTL 2.0, HTML, JSON, Jetty, Maven, Git, Tomcat, Eclipse 4.5.1, JavaMelody, etc.
 
 Application is available on the next public servers:
-Heroku: https://c-converter.herokuapp.com
+Heroku: https://c-converter.herokuapp.com (web page loading might take some time (upto 1 min) initially since Heroku account is free)
 Monitoring: https://c-converter.herokuapp.com/monitoring  
 Travis-CI: https://travis-ci.org/kondratiuk/currency-converter 
